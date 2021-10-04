@@ -13,18 +13,10 @@ import java.util.List;
 
 public class PlaylistController {
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Playlist> edit(
-            @RequestBody Playlist p,
-            @PathVariable Long id){
-        return ResponseEntity.off(
-                repository.findById(id).map(c -> {
-                    c.setNombre(p.getNombre()),
-                    c.setDescripcion(p.getDescripcion());
-                    repository.save(c);
-                    return c;
-                })
-        );
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete (@PathVariable Long id) {
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
