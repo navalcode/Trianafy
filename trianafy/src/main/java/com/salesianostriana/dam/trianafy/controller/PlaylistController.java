@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
+import com.salesianostriana.dam.trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import com.salesianostriana.dam.trianafy.model.Playlist;
@@ -22,6 +24,7 @@ import java.util.List;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+    private final SongRepository sRepository;
 
 
     @DeleteMapping("/list/{id}")
@@ -74,4 +77,16 @@ public class PlaylistController {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
+    @PostMapping("/lists{id1}/songs{id2}")
+    public ResponseEntity<Playlist> addSong(@PathVariable Long id1, Long id2){
+            Song nueva= sRepository.getById(id2);
+ //Revisar e intentar sin lambda, se puede!, ¡Ánimo!
+        return ResponseEntity.of(
+                repository.findById(id1).map(l ->
+                    l.getSongs().add(sRepository.getById(id2)));
+
+
+
+
+    }
 }
