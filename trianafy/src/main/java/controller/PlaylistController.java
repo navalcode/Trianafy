@@ -21,12 +21,32 @@ import repository.PlaylistRepository;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/playlist")
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+
+    /*@ApiResponse(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado la Playlist",
+                    content = { @Content(mediaType = "applicacion/json",
+                            schema = @Schema(implementation = Playlist.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha encontrado la Playlist por el ID",
+                    content = @Content),
+    })*/
+    @GetMapping("/{id}")
+    public ResponseEntity<Playlist> findOne(
+            @Parameter(description = "ID de la Playlist que desea buscar")
+            @PathVariable Long id
+    ){
+        return ResponseEntity
+                .ok()
+                .body(repository.findById(id).orElse(null));
+
 
 
     @GetMapping("/")
@@ -36,5 +56,6 @@ public class PlaylistController {
     @PostMapping("/")
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
+
     }
 }
