@@ -32,6 +32,31 @@ public class ArtistaController {
     private final ArtistaRepository artistaRepository;
 
 
+    @Operation(summary = "Obtiene un artista por su id y actualiza sus datos con el artista obtenido mediante " +
+            "el cuerpo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado el artista por el id y se ha modificado correctamente",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artista.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado el artista por su id",
+                    content = @Content),
+    })
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Artista> edit(@RequestBody Artista editArtista, @PathVariable Long id) {
+        return ResponseEntity.of(
+                artistaRepository
+                        .findById(id)
+                        .map(a -> {
+                            a.setName(editArtista.getName());
+                            artistaRepository.save(editArtista);
+                            return editArtista;
+                        })
+        );
+
+
     @Operation(summary = "Obtiene un artista por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
@@ -82,6 +107,7 @@ public class ArtistaController {
         return ResponseEntity
                 .ok()
                 .body(artistaRepository.findAll());
+
 
     }
 }
