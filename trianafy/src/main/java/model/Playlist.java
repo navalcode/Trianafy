@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,7 +23,7 @@ public class Playlist {
 
     @ManyToMany
     @ElementCollection
-    private List<Cancion> canciones;
+    private List<Song> canciones;
 
 
 
