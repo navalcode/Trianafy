@@ -24,12 +24,12 @@ public class PlaylistController {
     public ResponseEntity<Playlist> edit(
             @RequestBody Playlist p,
             @PathVariable Long id){
-        return ResponseEntity.off(
-                repository.findById(id).map(c -> {
-                    c.setNombre(p.getNombre()),
-                    c.setDescripcion(p.getDescripcion());
-                    repository.save(c);
-                    return c;
+        return ResponseEntity.of(
+                repository.findById(id).map(m -> {
+                    m.setNombre(p.getNombre());
+                    m.setDescripcion(p.getDescripcion());
+                    repository.save(m);
+                    return m;
                 })
         );
     }
