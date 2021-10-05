@@ -7,18 +7,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import model.Playlist;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import repository.PlaylistRepository;
 
+import repository.PlaylistRepository;
 import java.util.List;
 
 
@@ -28,6 +26,20 @@ import java.util.List;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Playlist> edit(
+            @RequestBody Playlist p,
+            @PathVariable Long id){
+        return ResponseEntity.of(
+                repository.findById(id).map(m -> {
+                    m.setNombre(p.getNombre());
+                    m.setDescripcion(p.getDescripcion());
+                    repository.save(m);
+                    return m;
+                })
+        );
 
     /*@ApiResponse(value = {
             @ApiResponse(responseCode = "200",
@@ -57,5 +69,7 @@ public class PlaylistController {
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
 
+
     }
+
 }
