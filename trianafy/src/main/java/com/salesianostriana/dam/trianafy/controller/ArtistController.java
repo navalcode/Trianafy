@@ -35,7 +35,7 @@ public class ArtistController {
             @ApiResponse(responseCode = "204",
                     description = "Artist Eliminado correctamente")})
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         artistRepository.deleteById(id);
         return ResponseEntity.noContent().build();
