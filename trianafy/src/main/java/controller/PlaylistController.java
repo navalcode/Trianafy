@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import repository.PlaylistRepository;
 
 
 import repository.PlaylistRepository;
 import java.util.List;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +26,12 @@ import java.util.List;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete (@PathVariable Long id) {
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
 
 
     @PutMapping("/{id}")
@@ -68,6 +74,7 @@ public class PlaylistController {
     @PostMapping("/")
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
+
 
 
     }
