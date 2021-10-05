@@ -1,4 +1,4 @@
 package repository;
 
-public class ArtistaRepository {
+public interface ArtistaRepository {
 }
