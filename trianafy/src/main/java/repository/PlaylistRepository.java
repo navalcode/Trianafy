@@ -1,4 +1,7 @@
 package repository;
 
-public class PlaylistRepository extends{
+import model.Playlist;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 }
