@@ -20,7 +20,7 @@ import java.util.List;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
-    @ApiResponse(value = {
+    /*@ApiResponse(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha encontrado la Playlist",
                     content = { @Content(mediaType = "applicacion/json",
@@ -28,12 +28,14 @@ public class PlaylistController {
             @ApiResponse(responseCode = "400",
                     description = "No se ha encontrado la Playlist por el ID",
                     content = @Content),
-    })
+    })*/
     @GetMapping("/{id}")
     public ResponseEntity<Playlist> findOne(
             @Parameter(description = "ID de la Playlist que desea buscar")
             @PathVariable Long id
     ){
-        return ResponseEntity.ok(repository.findById(id));
+        return ResponseEntity
+                .ok()
+                .body(repository.findById(id).orElse(null));
     }
 }
