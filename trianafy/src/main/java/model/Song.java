@@ -17,7 +17,7 @@ public class Song {
     private Long id;
 
     private String title;
-    private Artista artist;
+    private Artist artist;
     private String album;
     private String year;
 

@@ -32,20 +32,21 @@ public class PlaylistController {
     public ResponseEntity<?> delete (@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
-
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Playlist> edit(
             @RequestBody Playlist p,
-            @PathVariable Long id){
+            @PathVariable Long id) {
         return ResponseEntity.of(
                 repository.findById(id).map(m -> {
-                    m.setNombre(p.getNombre());
-                    m.setDescripcion(p.getDescripcion());
+                    m.setName(p.getName());
+                    m.setDescription(p.getDescription());
                     repository.save(m);
                     return m;
                 })
         );
+    }
 
     /*@ApiResponse(value = {
             @ApiResponse(responseCode = "200",
@@ -60,23 +61,20 @@ public class PlaylistController {
     public ResponseEntity<Playlist> findOne(
             @Parameter(description = "ID de la Playlist que desea buscar")
             @PathVariable Long id
-    ){
+    ) {
         return ResponseEntity
                 .ok()
                 .body(repository.findById(id).orElse(null));
-
+    }
 
 
     @GetMapping("/")
-    public ResponseEntity<List<Playlist>> findAll(){
+    public ResponseEntity<List<Playlist>> findAll() {
         return ResponseEntity.ok().body(repository.findAll());
-
+    }
     @PostMapping("/")
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
-
-
-
     }
 
 }

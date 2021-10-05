@@ -10,7 +10,7 @@ import javax.persistence.Id;
 @Entity
 @Data
 @NoArgsConstructor
-public class Artista {
+public class Artist {
 
     @Id
     @GeneratedValue
