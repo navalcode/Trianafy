@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import model.Artista;
 
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,17 @@ import java.util.List;
 public class ArtistaController {
 
     private final ArtistaRepository artistaRepository;
+
+
+    @Operation(summary = "Elimina un artista por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Artista Eliminado correctamente")})
+
+    @DeleteMapping("/id")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        artistaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
 
 
     @Operation(summary = "Obtiene un artista por su id y actualiza sus datos con el artista obtenido mediante " +
