@@ -206,7 +206,7 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Test delete Playlist",
 					"request": {
 						"method": "DELETE",
 						"header": [],
