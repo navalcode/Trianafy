@@ -33,7 +33,7 @@ public class ArtistaController {
                     description = "No se ha podido crear el artista, petición erronea.",
                     content = @Content),
     })
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<Artista> crate(@RequestBody Artista nuevoArtista) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
