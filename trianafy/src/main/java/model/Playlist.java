@@ -16,14 +16,14 @@ public class Playlist {
     @GeneratedValue
     private Long id;
 
-    private String nombre;
+    private String name;
 
     @Lob
-    private String descripcion;
+    private String description;
 
     @ManyToMany
     @ElementCollection
-    private List<Song> canciones;
+    private List<Song> songs;
 
 
 
