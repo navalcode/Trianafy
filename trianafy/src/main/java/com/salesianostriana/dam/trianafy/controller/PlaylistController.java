@@ -19,19 +19,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/playlist")
 public class PlaylistController {
 
     private final PlaylistRepository repository;
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/list/{id}")
     public ResponseEntity<?> delete (@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/list/{id}")
     public ResponseEntity<Playlist> edit(
             @RequestBody Playlist p,
             @PathVariable Long id) {
@@ -54,7 +53,7 @@ public class PlaylistController {
                     description = "No se ha encontrado la Playlist por el ID",
                     content = @Content),
     })*/
-    @GetMapping("/{id}")
+    @GetMapping("/list/{id}")
     public ResponseEntity<Playlist> findOne(
             @Parameter(description = "ID de la Playlist que desea buscar")
             @PathVariable Long id
@@ -65,11 +64,12 @@ public class PlaylistController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping("/lists")
     public ResponseEntity<List<Playlist>> findAll() {
         return ResponseEntity.ok().body(repository.findAll());
     }
-    @PostMapping("/")
+
+    @PostMapping("/lists")
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
