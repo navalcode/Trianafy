@@ -54,14 +54,14 @@ public class ArtistController {
     })
 
     @PutMapping("/{id}")
-    public ResponseEntity<Artist> edit(@RequestBody Artist editArtist, @PathVariable Long id) {
+    public ResponseEntity<Artist> edit(@RequestBody Artist e, @PathVariable Long id) {
         return ResponseEntity.of(
                 artistRepository
                         .findById(id)
                         .map(a -> {
-                            a.setName(editArtist.getName());
-                            artistRepository.save(editArtist);
-                            return editArtist;
+                            a.setName(e.getName());
+                            artistRepository.save(a);
+                            return a;
                         })
         );
     }
