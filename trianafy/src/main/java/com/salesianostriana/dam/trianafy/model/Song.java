@@ -1,11 +1,9 @@
-package model;
+package com.salesianostriana.dam.trianafy.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -17,6 +15,8 @@ public class Song {
     private Long id;
 
     private String title;
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
     private Artist artist;
     private String album;
     private String year;

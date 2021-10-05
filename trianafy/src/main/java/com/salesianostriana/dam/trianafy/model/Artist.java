@@ -1,4 +1,4 @@
-package model;
+package com.salesianostriana.dam.trianafy.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
