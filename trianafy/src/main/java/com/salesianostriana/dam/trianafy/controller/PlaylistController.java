@@ -27,7 +27,7 @@ public class PlaylistController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "400",
-                    description = "No se ha podido crear correctamente la playlist por el ID",
+                    description = "No se ha podido crear correctamente la playlist",
                     content = @Content),
     })
     
