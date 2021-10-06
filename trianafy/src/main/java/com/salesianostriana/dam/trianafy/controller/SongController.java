@@ -36,4 +36,21 @@ public class SongController {
                 .of(repository.findById(id));
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Song> edit(
+            @RequestBody Song s,
+            @PathVariable Long id) {
+
+        return ResponseEntity.of(
+                repository.findById(id).map(c -> {
+                    c.setTitle(s.getTitle());
+                    c.setAlbum(s.getAlbum());
+                    c.setArtist(s.getArtist());
+                    c.setYear(s.getYear());
+                    repository.save(c);
+                    return c;
+                })
+        );
+    }
 }
