@@ -1,9 +1,11 @@
 package controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import model.Playlist;
 
@@ -29,12 +31,20 @@ public class PlaylistController {
     private final PlaylistRepository repository;
 
 
+    @Operation(summary = "Ver todas las listas de reproducción existentes.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Lista de todas las playlists:",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Playlist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna playlist.",
+                    content = @Content),
+    })
+
     @GetMapping("/")
     public ResponseEntity<List<Playlist>> findAll(){
         return ResponseEntity.ok().body(repository.findAll());
 
-    @PostMapping("/")
-    public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 }
