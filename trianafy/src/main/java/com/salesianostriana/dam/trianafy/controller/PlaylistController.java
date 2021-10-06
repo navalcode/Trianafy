@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class PlaylistController {
 
 
     @DeleteMapping("/list/{id}")
-    public ResponseEntity<?> delete (@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -73,26 +72,32 @@ public class PlaylistController {
     }
 
     @PostMapping("/lists")
-    public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
+    public ResponseEntity<Playlist> create(@RequestBody Playlist nueva) {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
     @PostMapping("/lists/{id1}/songs/{id2}")
-    public ResponseEntity<Playlist> addSong(@PathVariable Long id1, @PathVariable Long id2){
+    public ResponseEntity<Playlist> addSong(@PathVariable Long id1, @PathVariable Long id2) {
 
-            Optional<Playlist> l = repository.findById(id1);
-            Optional<Song> s= sRepository.findById(id2);
+        List<Song> cancionesAntiguas = repository.getById(id1).getSongs();
 
-            if (l.isEmpty() || s.isEmpty()){
-                return ResponseEntity.notFound().build();
-            }else
-                repository.getById(id1).getSongs().add(sRepository.getById(id2));
+        Optional<Playlist> l = repository.findById(id1);
+        Optional<Song> s = sRepository.findById(id2);
 
-            return ResponseEntity
-                    .ok()
-                    .body(repository.findById(id1).orElse(null));
+        if (l.isEmpty() || s.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else
+            cancionesAntiguas.add(sRepository.getById(id2));
 
-
+        return ResponseEntity.of(
+                repository.findById(id1).map(m -> {
+                    m.setName(m.getName());
+                    m.setDescription(m.getDescription());
+                    m.setSongs(cancionesAntiguas);
+                    repository.save(m);
+                    return m;
+                })
+        );
 
 
     }
