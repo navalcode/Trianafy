@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.model.Artist;
+import com.salesianostriana.dam.trianafy.repository.ArtistRepository;
 import com.salesianostriana.dam.trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,6 +25,7 @@ import java.util.List;
 public class SongController {
 
     private final SongRepository repository;
+    private final ArtistRepository aRepository;
 
     @GetMapping("/")
     public ResponseEntity<List<Song>> findAll() {
@@ -55,11 +58,19 @@ public class SongController {
 
     @PostMapping("/")
     public ResponseEntity<Song> create(@RequestBody Song nuevaCancion) {
+        Artist nuevoArtista= nuevaCancion.getArtist();
+
+        if (nuevaCancion.getTitle() == null || nuevaCancion.getAlbum() == null || nuevaCancion.getArtist() == null || nuevaCancion.getYear() == null) {
+            return ResponseEntity.badRequest().build();
+        }else {
+            if (!aRepository.existsById(nuevoArtista.getId())) {
+                aRepository.save(nuevaCancion.getArtist());
+            }
+        }
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(repository.save(nuevaCancion));
-
     }
 
     @PutMapping("/{id}")
