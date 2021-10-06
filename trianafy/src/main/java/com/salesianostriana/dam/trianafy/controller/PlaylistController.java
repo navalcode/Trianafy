@@ -9,7 +9,6 @@ import com.salesianostriana.dam.trianafy.model.Playlist;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,11 +79,18 @@ public class PlaylistController {
 
     @PostMapping("/lists{id1}/songs{id2}")
     public ResponseEntity<Playlist> addSong(@PathVariable Long id1, Long id2){
-            Song nueva= sRepository.getById(id2);
- //Revisar e intentar sin lambda, se puede!, ¡Ánimo!
-        return ResponseEntity.of(
-                repository.findById(id1).map(l ->
-                    l.getSongs().add(sRepository.getById(id2)));
+
+            Optional<Playlist> l = repository.findById(id1);
+            Optional<Song> s= sRepository.findById(id2);
+
+            if (l.isEmpty() || s.isEmpty()){
+                return ResponseEntity.notFound().build();
+            }else
+                repository.getById(id1).getSongs().add(sRepository.getById(id2));
+
+            return ResponseEntity
+                    .ok()
+                    .body(repository.findById(id1).orElse(null));
 
 
 
