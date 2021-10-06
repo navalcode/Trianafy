@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
+import com.salesianostriana.dam.trianafy.repository.*;
 
 
 import java.util.List;
@@ -27,28 +27,28 @@ import java.util.List;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+    private final SongRepository SongRepository;
 
 
-    @Operation(summary = "Ver todas las canciones de una playlist por su ID.")
+    @Operation(summary = "Ver una canción por el ID de una playlist también buscada por el ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Devuelve una playlist con la lista de sus canciones.",
+                    description = "Devuelve una playlist con la canción indicada",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "404",
-                    description = "No se ha encontrado ninguna playlist.",
+                    description = "No se ha encontrado ninguna playlist o ninguna canción.",
                     content = @Content),
     })
 
-    @GetMapping("/{id}/songs")
+    @GetMapping("/{id}/songs/{id2}")
     public ResponseEntity<Playlist> findOne(
             @Parameter(description = "ID de la Playlist que desea buscar")
-            @PathVariable Long id
+            @PathVariable Long id, Long id2
     ) {
         return ResponseEntity
                 .ok()
-                .body(repository.findById(id).orElse(null));
-
+                .body(repository.findById(id).orElse(null).SongRepository.findById(id2));
     }
 
 }
