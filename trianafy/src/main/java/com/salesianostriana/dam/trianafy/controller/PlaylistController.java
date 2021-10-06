@@ -77,8 +77,8 @@ public class PlaylistController {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
-    @PostMapping("/lists{id1}/songs{id2}")
-    public ResponseEntity<Playlist> addSong(@PathVariable Long id1, Long id2){
+    @PostMapping("/lists/{id1}/songs/{id2}")
+    public ResponseEntity<Playlist> addSong(@PathVariable Long id1, @PathVariable Long id2){
 
             Optional<Playlist> l = repository.findById(id1);
             Optional<Song> s= sRepository.findById(id2);
