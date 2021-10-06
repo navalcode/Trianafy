@@ -29,10 +29,10 @@ public class PlaylistController {
     private final PlaylistRepository repository;
 
 
-    @Operation(summary = "Eliminar una lista por el ID.")
+    @Operation(summary = "Ver todas las canciones de una playlist por su ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204",
-                    description = "No devuelve nada, sólo borra la playlist indicada.",
+            @ApiResponse(responseCode = "200",
+                    description = "Devuelve una playlist con la lista de sus canciones.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "404",
@@ -40,10 +40,15 @@ public class PlaylistController {
                     content = @Content),
     })
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete (@PathVariable Long id) {
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/{id}/songs")
+    public ResponseEntity<Playlist> findOne(
+            @Parameter(description = "ID de la Playlist que desea buscar")
+            @PathVariable Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(repository.findById(id).orElse(null));
+
     }
 
 }
