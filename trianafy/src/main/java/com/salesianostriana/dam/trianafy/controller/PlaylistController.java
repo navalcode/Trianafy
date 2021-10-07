@@ -1,5 +1,8 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
+import com.salesianostriana.dam.trianafy.dto.PlaylistDto;
+import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
 import com.salesianostriana.dam.trianafy.repository.SongRepository;
@@ -134,15 +137,16 @@ public class PlaylistController {
                     description = "No se ha podido crear correctamente la playlist",
                     content = @Content),
     })
-    @PostMapping("/lists")
-    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto){
+   /* @PostMapping("/lists")
+    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto) {
 
         Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
 
         nueva.setId(nueva.getId());
         nueva.setName(nueva.getName());
         nueva.setDescription(nueva.getDescription());
-
+    }
+    */
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
@@ -152,11 +156,11 @@ public class PlaylistController {
     @GetMapping("lists/{id}/songs")
     public ResponseEntity<Playlist> findAllSongsInPlaylist(
             @Parameter(description = "ID de la Playlist que desea buscar")
-            @PathVariable Long id
-    ) {
+            @PathVariable Long id ) {
         return ResponseEntity
                 .ok()
                 .body(repository.findById(id).orElse(null));
+    }
 
     @PostMapping("/lists/{id1}/songs/{id2}")
     public ResponseEntity<Playlist> addSong(@PathVariable Long id1, @PathVariable Long id2) {

@@ -27,5 +27,9 @@ public class Playlist {
     private List<Song> songs = new ArrayList<>();
 
 
-
+    public Playlist(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 }
