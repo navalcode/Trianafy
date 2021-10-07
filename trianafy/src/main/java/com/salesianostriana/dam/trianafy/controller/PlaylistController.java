@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -93,15 +94,35 @@ public class PlaylistController {
         }return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("list/{id}/songs/{id2}")
+    @PostMapping("/lists/{id1}/songs/{id2}")
+    public ResponseEntity<Playlist> addSong(@PathVariable Long id1, @PathVariable Long id2) {
+
+        Optional<Playlist> l = repository.findById(id1);
+        Optional<Song> s = SongRepository.findById(id2);
+
+        Playlist playlist;
+        Song song;
+
+        if (l.isEmpty() || s.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            playlist = l.get();
+            song = s.get();
+        }
+
+        playlist.getSongs().add(song);
+        return ResponseEntity.ok(repository.save(playlist));
+    }
+
+    @DeleteMapping("list/{id1}/songs/{id2}")
     public ResponseEntity<Song> DeleteOneSong(
             @Parameter(description = "ID de la Playlist que desea buscar")
-            @PathVariable Long id,
+            @PathVariable Long id1,
             @PathVariable Long id2
     ) {
 
-        if(repository.findById(id) != null) {
-            repository.findById(id).get().getSongs().remove(SongRepository.findById(id2));
+        if(repository.findById(id1) != null) {
+            repository.findById(id1).get().getSongs().remove(SongRepository.findById(id2));
 
             return ResponseEntity.ok().build();
 
