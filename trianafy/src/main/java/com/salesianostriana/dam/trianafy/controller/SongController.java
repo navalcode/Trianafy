@@ -51,44 +51,54 @@ public class SongController {
 
 
     @PostMapping("/")
-    public ResponseEntity<SongDtoToUser> create (@RequestBody CreateSongDto dto){
+    public ResponseEntity<SongDtoToUser> create(@RequestBody CreateSongDto dto) {
 
-            if (dto.getArtistId()== null){
-                return ResponseEntity.notFound().build();
-            }
+        if (dto.getArtistId() == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-            Song nueva = dtoConverter.createSongDtoToSong(dto);
+        Song nueva = dtoConverter.createSongDtoToSong(dto);
 
-            Artist artist = aRepository.findById(dto.getArtistId()).orElse(null);
+        Artist artist = aRepository.findById(dto.getArtistId()).orElse(null);
 
-            nueva.setArtist(artist);
-            repository.save(nueva);
+        nueva.setArtist(artist);
+        repository.save(nueva);
 
-            SongDtoToUser dtoMostrar = dtoConverter.conversorPostSong(nueva);
+        SongDtoToUser dtoMostrar = dtoConverter.conversorPostSong(nueva);
 
 
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(dtoMostrar);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(dtoMostrar);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Song> edit(
-            @RequestBody Song s,
-            @PathVariable Long id) {
+    public ResponseEntity<SongDtoToUser> edit(@RequestBody CreateSongDto dto, @PathVariable Long id) {
 
-        return ResponseEntity.of(
-                repository.findById(id).map(c -> {
-                    c.setTitle(s.getTitle());
-                    c.setAlbum(s.getAlbum());
-                    c.setArtist(s.getArtist());
-                    c.setYear(s.getYear());
-                    repository.save(c);
-                    return c;
-                })
-        );
+        if (repository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            Song edit = dtoConverter.createSongDtoToSong(dto);
+            Artist artist = aRepository.findById(dto.getArtistId()).orElse(null);
+
+            edit.setArtist(artist);
+
+            return ResponseEntity.of(
+                    repository.findById(id).map(s -> {
+                        s.setArtist(edit.getArtist());
+                        s.setAlbum(edit.getAlbum());
+                        s.setTitle(edit.getTitle());
+                        s.setYear(edit.getYear());
+                        repository.save(s);
+                        SongDtoToUser dtoMostrar = dtoConverter.conversorPostSong(repository.getById(id));
+                        return dtoMostrar;
+                    }));
+
+        }
+
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);
