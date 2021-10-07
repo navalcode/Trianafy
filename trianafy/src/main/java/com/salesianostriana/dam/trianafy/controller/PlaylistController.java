@@ -187,12 +187,14 @@ public class PlaylistController {
                                               @PathVariable Long id2) {
 
         if (repository.findById(id1) != null) {
-            repository.findById(id1).get().getSongs().remove(sRepository.findById(id2));
+            Playlist listaNueva =  repository.findById(id1).get();
+            listaNueva.getSongs().remove(sRepository.findById(id2).get());
 
-            return ResponseEntity.ok().build();
+            repository.save(listaNueva);
 
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 
 
