@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @RestController
@@ -28,7 +29,9 @@ import java.util.Optional;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+    private final PlaylistDtoConverter dtoConverter;
     private final SongRepository sRepository;
+
 
 
     @Operation(summary = "Eliminar una lista por el ID.")
@@ -106,8 +109,19 @@ public class PlaylistController {
                     content = @Content),
     })
     @GetMapping("/lists")
-    public ResponseEntity<List<Playlist>> findAll() {
-        return ResponseEntity.ok().body(repository.findAll());
+    public ResponseEntity<List<PlaylistDto>> findAll() {
+        List<Playlist> data = repository.findAll();
+
+        if(data.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            List<PlaylistDto> result = data
+                    .stream()
+                    .map(dtoConverter::playlistToGetPlaylistDto)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok().body(result);
+        }
+
     }
 
     @Operation(summary = "Crea una playlist con los atributos previamente dados.")
@@ -121,7 +135,16 @@ public class PlaylistController {
                     content = @Content),
     })
     @PostMapping("/lists")
+    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto){
+
+        Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
+
+        nueva.setId(nueva.getId());
+        nueva.setName(nueva.getName());
+        nueva.setDescription(nueva.getDescription());
+
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva) {
+
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
