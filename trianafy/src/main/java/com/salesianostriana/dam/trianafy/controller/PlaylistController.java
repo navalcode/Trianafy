@@ -1,4 +1,5 @@
 package com.salesianostriana.dam.trianafy.controller;
+
 import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.GetPlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
@@ -26,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -41,13 +41,11 @@ public class PlaylistController {
     private final SongRepository sRepository;
 
 
-
-
     @Operation(summary = "Eliminar una lista por el ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
                     description = "No devuelve nada, sólo borra la playlist indicada.",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado ninguna playlist.",
@@ -64,7 +62,7 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Lista de todas las playlists:",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado ninguna playlist.",
@@ -91,7 +89,7 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha encontrado la Playlist",
-                    content = { @Content(mediaType = "applicacion/json",
+                    content = {@Content(mediaType = "applicacion/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado la Playlist por el ID",
@@ -111,7 +109,7 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Lista de todas las playlists:",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado ninguna playlist.",
@@ -121,9 +119,9 @@ public class PlaylistController {
     public ResponseEntity<List<GetPlaylistDto>> findAll() {
         List<Playlist> data = repository.findAll();
 
-        if(data.isEmpty()){
+        if (data.isEmpty()) {
             return ResponseEntity.notFound().build();
-        }else {
+        } else {
 
             List<GetPlaylistDto> result = data.stream().map(dtoConverter::playlistToGetPlaylistDto).collect(Collectors.toList());
             return ResponseEntity.ok().body(result);
@@ -134,7 +132,7 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                     description = "Se ha creado la playlist",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Playlist.class))}),
             @ApiResponse(responseCode = "400",
                     description = "No se ha podido crear correctamente la playlist",
@@ -142,7 +140,7 @@ public class PlaylistController {
     })
 
     @PostMapping("/lists")
-    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto){
+    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto) {
 
         Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
 
@@ -156,7 +154,7 @@ public class PlaylistController {
     @GetMapping("lists/{id}/songs")
     public ResponseEntity<Playlist> findAllSongsInPlaylist(
             @Parameter(description = "ID de la Playlist que desea buscar")
-            @PathVariable Long id ) {
+            @PathVariable Long id) {
         return ResponseEntity
                 .ok()
                 .body(repository.findById(id).orElse(null));
@@ -183,20 +181,20 @@ public class PlaylistController {
 
     }
 
-  
+
     @DeleteMapping("list/{id1}/songs/{id2}")
     public ResponseEntity<Song> DeleteOneSong(@PathVariable Long id1,
-            @PathVariable Long id2)
+                                              @PathVariable Long id2) {
 
-   if(repository.findById(id1) != null) {
+        if (repository.findById(id1) != null) {
             repository.findById(id1).get().getSongs().remove(sRepository.findById(id2));
 
             return ResponseEntity.ok().build();
 
-        }return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
-    }
 
     @GetMapping("list/{id1}/songs/{id2}")
     public ResponseEntity<Song> findOneSong(
@@ -208,12 +206,13 @@ public class PlaylistController {
 
         Song sComprobar = sRepository.findById(id2).get();
 
-        if(listaCanciones != null && listaCanciones.getSongs().contains(sComprobar) && sComprobar != null ) {
+        if (listaCanciones != null && listaCanciones.getSongs().contains(sComprobar) && sComprobar != null) {
 
             return ResponseEntity
                     .ok().body(sComprobar);
 
-        }return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }
