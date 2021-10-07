@@ -1,8 +1,14 @@
 package com.salesianostriana.dam.trianafy.controller;
 
 
+import com.salesianostriana.dam.trianafy.dto.CreateSongDto;
+import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
+import com.salesianostriana.dam.trianafy.dto.SongDtoToUser;
+import com.salesianostriana.dam.trianafy.model.Artist;
+import com.salesianostriana.dam.trianafy.repository.ArtistRepository;
 import com.salesianostriana.dam.trianafy.repository.ArtistRepository;
 import com.salesianostriana.dam.trianafy.model.Song;
+
 import com.salesianostriana.dam.trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,6 +25,9 @@ import java.util.List;
 public class SongController {
 
     private final SongRepository repository;
+    private final ArtistRepository aRepository;
+    private final ArtistController aController;
+    private final SongDtoConverter dtoConverter;
 
     @GetMapping("/")
     public ResponseEntity<List<Song>> findAll() {
@@ -38,6 +47,30 @@ public class SongController {
                 .of(repository.findById(id));
 
     }
+
+
+    @PostMapping("/")
+    public ResponseEntity<SongDtoToUser> create (@RequestBody CreateSongDto dto){
+
+            if (dto.getArtistId()== null){
+                return ResponseEntity.notFound().build();
+            }
+
+            Song nueva = dtoConverter.createSongDtoToSong(dto);
+
+            Artist artist = aRepository.findById(dto.getArtistId()).orElse(null);
+
+            nueva.setArtist(artist);
+            repository.save(nueva);
+
+            SongDtoToUser dtoMostrar = dtoConverter.conversorPostSong(nueva);
+
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(dtoMostrar);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Song> edit(

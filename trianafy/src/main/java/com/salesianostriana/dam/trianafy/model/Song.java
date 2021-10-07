@@ -22,5 +22,9 @@ public class Song implements Serializable {
     private String album;
     private String year;
 
-
+    public Song(String title, String album, String year) {
+        this.title = title;
+        this.album = album;
+        this.year = year;
+    }
 }
