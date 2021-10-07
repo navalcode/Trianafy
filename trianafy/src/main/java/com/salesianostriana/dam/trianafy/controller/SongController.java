@@ -33,9 +33,15 @@ public class SongController {
     @GetMapping("/")
     public ResponseEntity<List<Song>> findAll() {
 
-        return ResponseEntity
-                .ok()
-                .body(repository.findAll());
+        if(repository.findAll().isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        else {
+
+            return ResponseEntity
+                    .ok()
+                    .body(repository.findAll());
+        }
     }
 
     @GetMapping("/{id}")
