@@ -19,6 +19,7 @@ public class GetPlaylistDto {
     @GeneratedValue
     private Long id;
     private String name;
+    private String description;
     private int numberOfSongs;
 
 
