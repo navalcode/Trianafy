@@ -14,8 +14,17 @@ public class PlaylistDtoConverter {
         );
     }
 
-    public PlaylistDto playlistToGetPlaylistDto(Playlist p){
-        PlaylistDto result = new PlaylistDto();
+    public GetPlaylistDto playlistToGetPlaylistDto(Playlist p){
+        int numCanciones = p.getSongs().size();
+        GetPlaylistDto result = new GetPlaylistDto();
+        result.setId(p.getId());
+        result.setName(p.getName());
+        result.setNumberOfSongs(numCanciones);
+        return result;
+    }
+
+    public GetPlaylistDto playlistToGetPlaylistDto2(Playlist p){
+        GetPlaylistDto result = new GetPlaylistDto();
         result.setId(p.getId());
         result.setName(p.getName());
         result.setDescription(p.getDescription());

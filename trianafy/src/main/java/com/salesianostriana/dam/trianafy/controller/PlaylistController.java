@@ -1,7 +1,9 @@
 package com.salesianostriana.dam.trianafy.controller;
 
 import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
-import com.salesianostriana.dam.trianafy.dto.PlaylistDto;
+import com.salesianostriana.dam.trianafy.dto.GetPlaylistDto;
+import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
+import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
@@ -17,10 +19,12 @@ import com.salesianostriana.dam.trianafy.model.Playlist;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 
 import java.util.List;
@@ -112,19 +116,16 @@ public class PlaylistController {
                     content = @Content),
     })
     @GetMapping("/lists")
-    public ResponseEntity<List<PlaylistDto>> findAll() {
+    public ResponseEntity<List<GetPlaylistDto>> findAll() {
         List<Playlist> data = repository.findAll();
 
         if(data.isEmpty()){
             return ResponseEntity.notFound().build();
-        }else{
-            List<PlaylistDto> result = data
-                    .stream()
-                    .map(dtoConverter::playlistToGetPlaylistDto)
-                    .collect(Collectors.toList());
+        }else {
+
+            List<GetPlaylistDto> result = data.stream().map(dtoConverter::playlistToGetPlaylistDto).collect(Collectors.toList());
             return ResponseEntity.ok().body(result);
         }
-
     }
 
     @Operation(summary = "Crea una playlist con los atributos previamente dados.")
@@ -139,8 +140,13 @@ public class PlaylistController {
     })
 
     @PostMapping("/lists")
-    public ResponseEntity<Playlist> create(@RequestBody Playlist nueva) {
+    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto){
 
+        Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
+
+        nueva.setId(nueva.getId());
+        nueva.setName(nueva.getName());
+        nueva.setDescription(nueva.getDescription());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
