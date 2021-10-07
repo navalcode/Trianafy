@@ -25,12 +25,20 @@ public class SongDtoConverter {
 
     public SongDtoToUser conversorPostSong(Song s) {
         SongDtoToUser result = new SongDtoToUser();
-
-        result.setId(s.getId());
-        result.setTitle(s.getTitle());
-        result.setArtist(s.getArtist().getName());
-        result.setAlbum(s.getAlbum());
-        result.setYear(s.getYear());
-        return result;
+        if (s.getArtist()== null) {
+            result.setId(s.getId());
+            result.setTitle(s.getTitle());
+            result.setArtist(null);
+            result.setAlbum(s.getAlbum());
+            result.setYear(s.getYear());
+            return result;
+        } else {
+            result.setId(s.getId());
+            result.setTitle(s.getTitle());
+            result.setArtist(s.getArtist().getName());
+            result.setAlbum(s.getAlbum());
+            result.setYear(s.getYear());
+            return result;
+        }
     }
 }
