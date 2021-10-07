@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+    private final PlaylistDtoConverter dtoConverter;
 
 
     @DeleteMapping("/list/{id}")
@@ -65,12 +67,30 @@ public class PlaylistController {
 
 
     @GetMapping("/lists")
-    public ResponseEntity<List<Playlist>> findAll() {
-        return ResponseEntity.ok().body(repository.findAll());
+    public ResponseEntity<List<PlaylistDto>> findAll() {
+        List<Playlist> data = repository.findAll();
+
+        if(data.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            List<PlaylistDto> result = data
+                    .stream()
+                    .map(dtoConverter::playlistToGetPlaylistDto)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok().body(result);
+        }
+
     }
 
     @PostMapping("/lists")
-    public ResponseEntity<Playlist> create(@RequestBody Playlist nueva){
+    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto){
+
+        Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
+
+        nueva.setId(nueva.getId());
+        nueva.setName(nueva.getName());
+        nueva.setDescription(nueva.getDescription());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
