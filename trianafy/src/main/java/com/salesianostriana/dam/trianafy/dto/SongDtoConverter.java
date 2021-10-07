@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SongDtoConverter {
-    public Song createSongDtoToSong (CreateSongDto s){
+    public Song createSongDtoToSong(CreateSongDto s) {
         return new Song(
                 s.getTitle(),
                 s.getAlbum(),
@@ -13,7 +13,7 @@ public class SongDtoConverter {
         );
     }
 
-    public GetSongDto SongToGetSongDto (Song s){
+    public GetSongDto SongToGetSongDto(Song s) {
         GetSongDto result = new GetSongDto();
 
         result.setTitle(s.getTitle());
@@ -23,7 +23,7 @@ public class SongDtoConverter {
         return result;
     }
 
-    public SongDtoToUser conversorPostSong (Song s){
+    public SongDtoToUser conversorPostSong(Song s) {
         SongDtoToUser result = new SongDtoToUser();
 
         result.setId(s.getId());

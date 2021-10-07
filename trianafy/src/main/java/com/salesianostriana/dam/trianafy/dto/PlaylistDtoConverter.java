@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlaylistDtoConverter {
 
-    public Playlist createPlaylistDtoToPlaylist(CreatePlaylistDto c){
+    public Playlist createPlaylistDtoToPlaylist(CreatePlaylistDto c) {
         return new Playlist(
                 c.getId(),
                 c.getName(),
@@ -14,7 +14,7 @@ public class PlaylistDtoConverter {
         );
     }
 
-    public GetPlaylistDto playlistToGetPlaylistDto(Playlist p){
+    public GetPlaylistDto playlistToGetPlaylistDto(Playlist p) {
         int numCanciones = p.getSongs().size();
         GetPlaylistDto result = new GetPlaylistDto();
         result.setId(p.getId());
@@ -23,7 +23,7 @@ public class PlaylistDtoConverter {
         return result;
     }
 
-    public CreatePlaylistDto playlistToGetPlaylistDtoToCreatePlaylist(Playlist p){
+    public CreatePlaylistDto playlistToGetPlaylistDtoToCreatePlaylist(Playlist p) {
         CreatePlaylistDto result = new CreatePlaylistDto();
         result.setId(p.getId());
         result.setName(p.getName());

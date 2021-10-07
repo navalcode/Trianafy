@@ -33,8 +33,8 @@ public class ArtistController {
     @Operation(summary = "Elimina un artist por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
-                    description = "Artist Eliminado correctamente")})
-
+                    description = "Artist Eliminado correctamente")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         artistRepository.deleteById(id);
@@ -46,15 +46,18 @@ public class ArtistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha encontrado el artist por el id y se ha modificado correctamente",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Artist.class))}),
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado el artist por su id",
                     content = @Content),
     })
-
     @PutMapping("/{id}")
     public ResponseEntity<Artist> edit(@RequestBody Artist e, @PathVariable Long id) {
+
+        if (artistRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.of(
                 artistRepository
                         .findById(id)
@@ -76,10 +79,12 @@ public class ArtistController {
                     description = "No se han encontrado el artist",
                     content = @Content),
     })
-
     @GetMapping("/{id}")
     public ResponseEntity<Artist> findOne(@Parameter(description = "El id del artist a buscar")
-                                                     @PathVariable Long id) {
+                                          @PathVariable Long id) {
+        if (artistRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.of(artistRepository.findById(id));
     }
 
@@ -93,7 +98,6 @@ public class ArtistController {
                     description = "No se ha podido crear el artist, petición erronea.",
                     content = @Content),
     })
-
     @PostMapping("/")
     public ResponseEntity<Artist> create(@RequestBody Artist nuevoArtista) {
         return ResponseEntity
@@ -111,13 +115,13 @@ public class ArtistController {
                     description = "No se han encontrado los artists",
                     content = @Content),
     })
-
     @GetMapping("/")
     public ResponseEntity<List<Artist>> findAll() {
+        if (artistRepository.findAll().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity
                 .ok()
                 .body(artistRepository.findAll());
-
-
     }
 }

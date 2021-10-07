@@ -11,7 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Data
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class GetPlaylistDto {
 
