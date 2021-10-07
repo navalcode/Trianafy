@@ -1,5 +1,4 @@
 package com.salesianostriana.dam.trianafy.controller;
-
 import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.GetPlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
@@ -9,6 +8,7 @@ import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
 import com.salesianostriana.dam.trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Operation;
+
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
+
 @RestController
 @RequiredArgsConstructor
 public class PlaylistController {
@@ -38,6 +39,7 @@ public class PlaylistController {
     private final PlaylistRepository repository;
     private final PlaylistDtoConverter dtoConverter;
     private final SongRepository sRepository;
+
 
 
 
@@ -181,6 +183,21 @@ public class PlaylistController {
 
     }
 
+  
+    @DeleteMapping("list/{id1}/songs/{id2}")
+    public ResponseEntity<Song> DeleteOneSong(@PathVariable Long id1,
+            @PathVariable Long id2)
+
+   if(repository.findById(id1) != null) {
+            repository.findById(id1).get().getSongs().remove(sRepository.findById(id2));
+
+            return ResponseEntity.ok().build();
+
+        }return ResponseEntity.noContent().build();
+    }
+
+    }
+
     @GetMapping("list/{id1}/songs/{id2}")
     public ResponseEntity<Song> findOneSong(
             @Parameter(description = "ID de la Playlist que desea buscar")
@@ -198,4 +215,5 @@ public class PlaylistController {
 
         }return ResponseEntity.notFound().build();
     }
+
 }
