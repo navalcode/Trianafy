@@ -137,16 +137,8 @@ public class PlaylistController {
                     description = "No se ha podido crear correctamente la playlist",
                     content = @Content),
     })
-   /* @PostMapping("/lists")
-    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto) {
 
-        Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
-
-        nueva.setId(nueva.getId());
-        nueva.setName(nueva.getName());
-        nueva.setDescription(nueva.getDescription());
-    }
-    */
+    @PostMapping("/lists")
     public ResponseEntity<Playlist> create(@RequestBody Playlist nueva) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
