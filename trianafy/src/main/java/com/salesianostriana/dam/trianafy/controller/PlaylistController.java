@@ -79,25 +79,22 @@ public class PlaylistController {
     @PostMapping("/lists/{id1}/songs/{id2}")
     public ResponseEntity<Playlist> addSong(@PathVariable Long id1, @PathVariable Long id2) {
 
-        List<Song> cancionesAntiguas = repository.getById(id1).getSongs();
-
         Optional<Playlist> l = repository.findById(id1);
         Optional<Song> s = sRepository.findById(id2);
 
+        Playlist playlist;
+        Song song;
+
         if (l.isEmpty() || s.isEmpty()) {
             return ResponseEntity.notFound().build();
-        } else
-            cancionesAntiguas.add(sRepository.getById(id2));
+        } else {
+            playlist = l.get();
+            song = s.get();
+        }
 
-        return ResponseEntity.of(
-                repository.findById(id1).map(m -> {
-                    m.setName(m.getName());
-                    m.setDescription(m.getDescription());
-                    m.setSongs(cancionesAntiguas);
-                    repository.save(m);
-                    return m;
-                })
-        );
+        playlist.getSongs().add(song);
+        return ResponseEntity.ok(repository.save(playlist));
+
 
 
     }

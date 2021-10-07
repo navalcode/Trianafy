@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,9 +23,8 @@ public class Playlist {
     @Lob
     private String description;
 
-    @ManyToMany
-    @ElementCollection
-    private List<Song> songs;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Song> songs = new ArrayList<>();
 
 
 
