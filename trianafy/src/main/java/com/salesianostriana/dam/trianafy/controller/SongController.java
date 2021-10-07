@@ -2,6 +2,7 @@ package com.salesianostriana.dam.trianafy.controller;
 
 
 import com.salesianostriana.dam.trianafy.dto.CreateSongDto;
+import com.salesianostriana.dam.trianafy.dto.GetSongDto;
 import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
 import com.salesianostriana.dam.trianafy.dto.SongDtoToUser;
 import com.salesianostriana.dam.trianafy.model.Artist;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/song")
@@ -31,11 +33,15 @@ public class SongController {
     private final SongDtoConverter dtoConverter;
 
     @GetMapping("/")
-    public ResponseEntity<List<Song>> findAll() {
+    public ResponseEntity<List<SongDtoToUser>> findAll() {
+        List<Song> data = repository.findAll();
 
-        return ResponseEntity
-                .ok()
-                .body(repository.findAll());
+        if(data.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else {
+            List<SongDtoToUser> result = data.stream().map(dtoConverter::conversorPostSong).collect(Collectors.toList());
+            return ResponseEntity.ok().body(result);
+        }
     }
 
     @GetMapping("/{id}")
