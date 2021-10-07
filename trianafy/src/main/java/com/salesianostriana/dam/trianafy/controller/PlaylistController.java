@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
+import com.salesianostriana.dam.trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import com.salesianostriana.dam.trianafy.model.Playlist;
@@ -22,6 +24,7 @@ import java.util.List;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+    private final SongRepository SongRepository;
 
 
     @DeleteMapping("/list/{id}")
@@ -74,14 +77,18 @@ public class PlaylistController {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
-    @GetMapping("lists/{id}/songs")
-    public ResponseEntity<Playlist> findAllSongsInPlaylist(
+    @GetMapping("lists/{id}/songs/{id2}")
+    public ResponseEntity<Song> findOneSong(
             @Parameter(description = "ID de la Playlist que desea buscar")
-            @PathVariable Long id
+            @PathVariable Long id,
+            @PathVariable Long id2
     ) {
-        return ResponseEntity
-                .ok()
-                .body(repository.findById(id).orElse(null));
 
+        if(repository.findById(id) != null) {
+
+            return ResponseEntity
+                    .ok()
+                    .body(SongRepository.findById(id2).orElse(null));
+        }return ResponseEntity.noContent().build();
     }
 }
