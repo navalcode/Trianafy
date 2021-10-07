@@ -14,11 +14,9 @@ public class PlaylistDtoConverter {
         );
     }
 
-    public PlaylistDto playlistToGetPlaylistDto(Playlist p){
-        PlaylistDto result = new PlaylistDto();
-        result.setId(p.getId());
+    public GetPlaylistDto playlistToGetPlaylistDto(Playlist p){
+        GetPlaylistDto result = new GetPlaylistDto();
         result.setName(p.getName());
-        result.setDescription(p.getDescription());
         return result;
     }
 }

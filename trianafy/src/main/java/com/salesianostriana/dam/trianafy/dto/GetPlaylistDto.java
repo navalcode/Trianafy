@@ -13,11 +13,13 @@ import javax.persistence.Lob;
 @Data
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class PlaylistDto {
+public class GetPlaylistDto {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
-    private String description;
+    private int numberOfSongs;
 
 
 }

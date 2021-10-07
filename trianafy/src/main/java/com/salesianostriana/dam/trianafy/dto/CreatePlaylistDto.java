@@ -15,6 +15,6 @@ public class CreatePlaylistDto {
     private Long id;
     private String name;
     private String description;
-    private List<Song> songs;
+    private int numberOfSongs;
 
 }
