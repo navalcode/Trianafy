@@ -74,4 +74,14 @@ public class PlaylistController {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
+    @GetMapping("lists/{id}/songs")
+    public ResponseEntity<Playlist> findAllSongsInPlaylist(
+            @Parameter(description = "ID de la Playlist que desea buscar")
+            @PathVariable Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(repository.findById(id).orElse(null));
+
+    }
 }
