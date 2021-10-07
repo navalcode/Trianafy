@@ -1,5 +1,8 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.dto.CreateSongDto;
+import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
+import com.salesianostriana.dam.trianafy.dto.SongDtoToUser;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.repository.ArtistRepository;
 import com.salesianostriana.dam.trianafy.repository.SongRepository;
@@ -27,6 +30,7 @@ public class SongController {
     private final SongRepository repository;
     private final ArtistRepository aRepository;
     private final ArtistController aController;
+    private final SongDtoConverter dtoConverter;
 
     @GetMapping("/")
     public ResponseEntity<List<Song>> findAll() {
@@ -58,25 +62,25 @@ public class SongController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Song> create(@RequestBody Song nuevaCancion) {
-        Artist nuevoArtista= nuevaCancion.getArtist();
+    public ResponseEntity<SongDtoToUser> create (@RequestBody CreateSongDto dto){
 
-        if (nuevaCancion.getTitle() == null || nuevaCancion.getAlbum() == null || nuevaCancion.getYear() == null) {
-            return ResponseEntity.badRequest().build();
-        }else {
-            if (nuevoArtista!=null) {
-                if(nuevoArtista.getId()==null) {
-                    aController.create(nuevoArtista);
-                }else {
-                    if(!aRepository.existsById(nuevoArtista.getId()))
-                        aRepository.save(nuevaCancion.getArtist());
-                }
+            if (dto.getArtistId()== null){
+                return ResponseEntity.notFound().build();
             }
-        }
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(repository.save(nuevaCancion));
+            Song nueva = dtoConverter.createSongDtoToSong(dto);
+
+            Artist artist = aRepository.findById(dto.getArtistId()).orElse(null);
+
+            nueva.setArtist(artist);
+            repository.save(nueva);
+
+            SongDtoToUser dtoMostrar = dtoConverter.conversorPostSong(nueva);
+
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(dtoMostrar);
     }
 
     @PutMapping("/{id}")
