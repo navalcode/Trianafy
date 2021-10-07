@@ -1,21 +1,18 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+
 import com.salesianostriana.dam.trianafy.dto.CreateSongDto;
 import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
 import com.salesianostriana.dam.trianafy.dto.SongDtoToUser;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.repository.ArtistRepository;
+import com.salesianostriana.dam.trianafy.repository.ArtistRepository;
+import com.salesianostriana.dam.trianafy.model.Song;
+
 import com.salesianostriana.dam.trianafy.repository.SongRepository;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import com.salesianostriana.dam.trianafy.model.Song;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,16 +37,6 @@ public class SongController {
                 .body(repository.findAll());
     }
 
-    @Operation(summary = "Obtiene una canción en base a su ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se ha encontrado la canción",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Song.class))}),
-            @ApiResponse(responseCode = "400",
-                    description = "No se ha encontrado la canción con ese ID",
-                    content = @Content),
-    })
     @GetMapping("/{id}")
     public ResponseEntity<Song> findOne(
             @Parameter(description = "ID de la canción a buscar")
@@ -60,6 +47,7 @@ public class SongController {
                 .of(repository.findById(id));
 
     }
+
 
     @PostMapping("/")
     public ResponseEntity<SongDtoToUser> create (@RequestBody CreateSongDto dto){
@@ -83,6 +71,7 @@ public class SongController {
                     .body(dtoMostrar);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<Song> edit(
             @RequestBody Song s,
@@ -99,7 +88,6 @@ public class SongController {
                 })
         );
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         repository.deleteById(id);

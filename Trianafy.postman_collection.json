@@ -1,5 +1,6 @@
 {
 	"info": {
+
 		"_postman_id": "5072e688-183b-4478-a0cb-62834987c0fe",
 		"name": "Trianafy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -223,6 +224,16 @@
 						}
 					},
 					"response": []
+
+				},
+				{
+					"name": "Test add song to playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/lists/1/songs/5",
+
 				}
 			]
 		},
@@ -311,11 +322,18 @@
 						},
 						"url": {
 							"raw": "localhost:8080/song/1",
+
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+
+								"lists",
+								"1",
+								"songs",
+								"5"
+
 								"song",
 								"1"
 							]
