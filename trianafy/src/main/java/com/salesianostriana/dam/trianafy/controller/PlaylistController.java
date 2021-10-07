@@ -78,7 +78,7 @@ public class PlaylistController {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
     }
 
-    @GetMapping("/{id}/songs/{id2}")
+    @GetMapping("list/{id}/songs/{id2}")
     public ResponseEntity<Song> findOneSong(
             @Parameter(description = "ID de la Playlist que desea buscar")
             @PathVariable Long id,
@@ -90,6 +90,21 @@ public class PlaylistController {
             return ResponseEntity
                     .ok()
                     .body(SongRepository.findById(id2).orElse(null));
+        }return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("list/{id}/songs/{id2}")
+    public ResponseEntity<Song> DeleteOneSong(
+            @Parameter(description = "ID de la Playlist que desea buscar")
+            @PathVariable Long id,
+            @PathVariable Long id2
+    ) {
+
+        if(repository.findById(id) != null) {
+            repository.findById(id).get().getSongs().remove(SongRepository.findById(id2));
+
+            return ResponseEntity.ok().build();
+
         }return ResponseEntity.noContent().build();
     }
 
