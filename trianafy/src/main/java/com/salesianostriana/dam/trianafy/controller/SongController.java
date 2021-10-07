@@ -26,6 +26,7 @@ public class SongController {
 
     private final SongRepository repository;
     private final ArtistRepository aRepository;
+    private final ArtistController aController;
 
     @GetMapping("/")
     public ResponseEntity<List<Song>> findAll() {
@@ -60,11 +61,16 @@ public class SongController {
     public ResponseEntity<Song> create(@RequestBody Song nuevaCancion) {
         Artist nuevoArtista= nuevaCancion.getArtist();
 
-        if (nuevaCancion.getTitle() == null || nuevaCancion.getAlbum() == null || nuevaCancion.getArtist() == null || nuevaCancion.getYear() == null) {
+        if (nuevaCancion.getTitle() == null || nuevaCancion.getAlbum() == null || nuevaCancion.getYear() == null) {
             return ResponseEntity.badRequest().build();
         }else {
-            if (!aRepository.existsById(nuevoArtista.getId())) {
-                aRepository.save(nuevaCancion.getArtist());
+            if (nuevoArtista!=null) {
+                if(nuevoArtista.getId()==null) {
+                    aController.create(nuevoArtista);
+                }else {
+                    if(!aRepository.existsById(nuevoArtista.getId()))
+                        aRepository.save(nuevaCancion.getArtist());
+                }
             }
         }
 
