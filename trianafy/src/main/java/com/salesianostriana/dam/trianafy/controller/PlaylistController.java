@@ -179,8 +179,23 @@ public class PlaylistController {
         playlist.getSongs().add(song);
         return ResponseEntity.ok(repository.save(playlist));
 
+    }
 
+    @GetMapping("list/{id1}/songs/{id2}")
+    public ResponseEntity<Song> findOneSong(
+            @Parameter(description = "ID de la Playlist que desea buscar")
+            @PathVariable Long id1,
+            @PathVariable Long id2
+    ) {
+        Playlist listaCanciones = repository.findById(id1).get();
 
+        Song sComprobar = sRepository.findById(id2).get();
 
+        if(listaCanciones != null && listaCanciones.getSongs().contains(sComprobar) && sComprobar != null ) {
+
+            return ResponseEntity
+                    .ok().body(sComprobar);
+
+        }return ResponseEntity.notFound().build();
     }
 }
