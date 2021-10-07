@@ -23,8 +23,8 @@ public class PlaylistDtoConverter {
         return result;
     }
 
-    public GetPlaylistDto playlistToGetPlaylistDto2(Playlist p){
-        GetPlaylistDto result = new GetPlaylistDto();
+    public CreatePlaylistDto playlistToGetPlaylistDtoToCreatePlaylist(Playlist p){
+        CreatePlaylistDto result = new CreatePlaylistDto();
         result.setId(p.getId());
         result.setName(p.getName());
         result.setDescription(p.getDescription());

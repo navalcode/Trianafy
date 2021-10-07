@@ -140,14 +140,15 @@ public class PlaylistController {
     })
 
     @PostMapping("/lists")
-    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto dto) {
+    public ResponseEntity<CreatePlaylistDto> create(@RequestBody CreatePlaylistDto dto) {
 
         Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
 
-        nueva.setId(nueva.getId());
-        nueva.setName(nueva.getName());
-        nueva.setDescription(nueva.getDescription());
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(nueva));
+        repository.save(nueva);
+
+        CreatePlaylistDto dtoMostrar = dtoConverter.playlistToGetPlaylistDtoToCreatePlaylist(nueva);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(dtoMostrar);
     }
 
 
