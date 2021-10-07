@@ -4,7 +4,6 @@ import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.GetPlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
 import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
-import com.salesianostriana.dam.trianafy.dto.PlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
@@ -123,6 +122,7 @@ public class PlaylistController {
         if(data.isEmpty()){
             return ResponseEntity.notFound().build();
         }else {
+
             List<GetPlaylistDto> result = data.stream().map(dtoConverter::playlistToGetPlaylistDto).collect(Collectors.toList());
             return ResponseEntity.ok().body(result);
         }
