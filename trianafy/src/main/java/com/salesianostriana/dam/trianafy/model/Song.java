@@ -27,4 +27,11 @@ public class Song implements Serializable {
         this.album = album;
         this.year = year;
     }
+
+    public Song(String title, Artist artist, String album, String year) {
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.year = year;
+    }
 }

@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/song")
@@ -46,15 +47,14 @@ public class SongController {
                     content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<Song>> findAll() {
+    public ResponseEntity<List<SongDtoToUser>> findAll() {
+        List<Song> data = repository.findAll();
 
-        if (repository.findAll().isEmpty()) {
+        if(data.isEmpty()){
             return ResponseEntity.notFound().build();
-        } else {
-
-            return ResponseEntity
-                    .ok()
-                    .body(repository.findAll());
+        }else {
+            List<SongDtoToUser> result = data.stream().map(dtoConverter::conversorPostSong).collect(Collectors.toList());
+            return ResponseEntity.ok().body(result);
         }
     }
 
