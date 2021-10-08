@@ -30,6 +30,8 @@ _Para probar todos los endpoints del proyecto sugerimos importar el archivo.json
 _Por defecto se generan algunos datos para realizar pruebas por medio de un InitData, puede comenzar con las peticiones GET para listar todos los artistas, canciones y playlist.
 Esta primera busqueda le servirá para conocer los id de las entidades, de este modo podrá usar las peticiones POST, PUT y DELETE correspondientes a cada entidad._
 
+###### Sugerimos fervientemente prestar atención a los id de las entidades con los métodos GET para poder realizar las peticiones POST,PUT y DELETE correctamente, tal como describimos en el parrafo previo.
+
 ## Autores ✒️
 
 * **Manuel Naval** - *Proyecto Trianafy* - [navalcode](https://github.com/navalcode)
