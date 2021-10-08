@@ -35,6 +35,9 @@ Esta primera busqueda le servirá para conocer los id de las entidades, de este 
 ## Documentación con swagger
 _Para acceder a la documentación ejecute el proyecto maven con el plugin boot-boot:run y en su navegador acceda a esta ruta:_
 
+
+* **Documentación** - [Documentación](http://localhost:8080/swagger-ui.html)
+
 ## Autores ✒️
 
 * **Manuel Naval** - *Proyecto Trianafy* - [navalcode](https://github.com/navalcode)
