@@ -10,7 +10,7 @@ Pudiendo salvar los cambios en una base de datos._
 * **Fran Gallego** - *Proyecto Trianafy* - [Gallegogofra21](https://github.com/Gallegogofra21)
 
 * **Alejandro Ramírez** - *Proyecto Trianafy* - [arramos27](https://github.com/arramos270)
-* 
+
 ## Sugerencia de pruebas 📋
 
 ###### Colecciones json
