@@ -11,7 +11,7 @@ _La aplicación corre bajo el framework Spring empaquetado con maven._
 _Esta entidad está compuesta por su id y el nombre del artista_
 
 ###### Song
-_Esta entidad está compuesta por su id, el titulo de la canción, el nombre del album, año y un Artist, teniendo está última una relación OneToMany con Artist a través de su id.
+_Esta entidad está compuesta por su id, el titulo de la canción, el nombre del album, año y un Artist, teniendo está última una relación OneToMany con Artist a través de su id._
 
 ###### Playlist
 _Esta entidad está compuesta por su id, su nombre, una descripción y una lista de canciones, teniendo está última una relación ManyToMany con Song a través de su id_
