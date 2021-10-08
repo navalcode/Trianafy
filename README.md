@@ -32,6 +32,9 @@ Esta primera busqueda le servirá para conocer los id de las entidades, de este 
 
 ###### Sugerimos fervientemente prestar atención a los id de las entidades con los métodos GET para poder realizar las peticiones POST,PUT y DELETE correctamente, tal como describimos en el parrafo previo.
 
+## Documentación con swagger
+_Para acceder a la documentación ejecute el proyecto maven con el plugin boot-boot:run y en su navegador acceda a esta ruta: localhost:8080/swagger-ui.html _
+
 ## Autores ✒️
 
 * **Manuel Naval** - *Proyecto Trianafy* - [navalcode](https://github.com/navalcode)
