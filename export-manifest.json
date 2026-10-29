@@ -1,0 +1,46 @@
+[
+  {
+    "path": ".gitignore",
+    "sha256": "ac8675097116adad8a66304ef6ab2fad535e9c96b90bffe27b1378f86725dac7"
+  },
+  {
+    "path": "DESIGN.md",
+    "sha256": "3736ab38485673ba554395cad1e419ab6faadda6f39034de354b8872fd7b7c6f"
+  },
+  {
+    "path": "README.es.md",
+    "sha256": "fa35038788d1ad18aa3634867b8a9ae36764eaabb69b9d405dc9431326a56144"
+  },
+  {
+    "path": "README.md",
+    "sha256": "7e6c2ec7946ced9de8e69eca02f40f82eb197bb221ce04425f22b7504acb2238"
+  },
+  {
+    "path": "THIRD_PARTY.md",
+    "sha256": "f5c37dc2448e54c8f567c62ebcf105e8e5a184039a1c2bdad544db909be3b80a"
+  },
+  {
+    "path": "docs/verification.json",
+    "sha256": "b2dc38151604fdcfedae1dce8895844b4562e953f1e23f4598800e854cba6ea6"
+  },
+  {
+    "path": "trianafy/src/main/java/com/salesianostriana/dam/trianafy/controller/ArtistController.java",
+    "sha256": "68e1e99c677076b823048fe1ce1fbd338b92344f61443cef71b901ddc4d02d24"
+  },
+  {
+    "path": "trianafy/src/main/java/com/salesianostriana/dam/trianafy/controller/PlaylistController.java",
+    "sha256": "a11497375a02d5e9572d116caf8b6d7a948cc192cab278ce55bbc04c08cea355"
+  },
+  {
+    "path": "trianafy/src/main/java/com/salesianostriana/dam/trianafy/controller/SongController.java",
+    "sha256": "2c83b05f680d2b51b1fff249a353f6f56fa66e65a50101406604e6a14fbc3f0d"
+  },
+  {
+    "path": "trianafy/src/main/resources/application.properties",
+    "sha256": "8f27b055f055fb0862acc4f054c907386b1a1c7043da33acb868be383266011d"
+  },
+  {
+    "path": "trianafy/src/test/java/com/salesianostriana/dam/trianafy/MusicHttpJourneyTest.java",
+    "sha256": "e3a57e55106c44a0099530851662ab71a87130f51f6b9302b0a4e378c8960f2d"
+  }
+]

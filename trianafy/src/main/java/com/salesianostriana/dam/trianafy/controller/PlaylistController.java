@@ -3,8 +3,6 @@ package com.salesianostriana.dam.trianafy.controller;
 import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.GetPlaylistDto;
 import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
-import com.salesianostriana.dam.trianafy.dto.CreatePlaylistDto;
-import com.salesianostriana.dam.trianafy.dto.PlaylistDtoConverter;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repository.PlaylistRepository;
 import com.salesianostriana.dam.trianafy.repository.SongRepository;
@@ -29,11 +27,13 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
 
 @RestController
+@Transactional
 @RequiredArgsConstructor
 @Tag(name = "Playlist", description = "El controlador de las playlist")
 public class PlaylistController {
@@ -52,7 +52,9 @@ public class PlaylistController {
     })
     @DeleteMapping("/list/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        Playlist playlist = repository.findById(id).orElse(null);
+        if (playlist == null) return ResponseEntity.notFound().build();
+        repository.delete(playlist);
         return ResponseEntity.noContent().build();
     }
 
@@ -145,6 +147,7 @@ public class PlaylistController {
     @PostMapping("/lists")
     public ResponseEntity<CreatePlaylistDto> create(@RequestBody CreatePlaylistDto dto) {
 
+        if (dto.getId() != null) return ResponseEntity.badRequest().build();
         Playlist nueva = dtoConverter.createPlaylistDtoToPlaylist(dto);
 
         repository.save(nueva);
@@ -191,23 +194,14 @@ public class PlaylistController {
     })
     @PostMapping("/lists/{id1}/songs/{id2}")
     public ResponseEntity<Playlist> addSong(@PathVariable Long id1, @PathVariable Long id2) {
-
-        Optional<Playlist> l = repository.findById(id1);
-        Optional<Song> s = sRepository.findById(id2);
-
-        Playlist playlist;
-        Song song;
-
-        if (l.isEmpty() || s.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            playlist = l.get();
-            song = s.get();
+        Playlist playlist = repository.findById(id1).orElse(null);
+        Song song = sRepository.findById(id2).orElse(null);
+        if (playlist == null || song == null) return ResponseEntity.notFound().build();
+        if (playlist.getSongs().stream().noneMatch(item -> id2.equals(item.getId()))) {
+            playlist.getSongs().add(song);
+            repository.save(playlist);
         }
-
-        playlist.getSongs().add(song);
-        return ResponseEntity.ok(repository.save(playlist));
-
+        return ResponseEntity.ok(playlist);
     }
 
     @Operation(summary = "Borra una canción de una lista.")
@@ -223,16 +217,13 @@ public class PlaylistController {
     @DeleteMapping("list/{id1}/songs/{id2}")
     public ResponseEntity<Song> DeleteOneSong(@PathVariable Long id1,
                                               @PathVariable Long id2) {
-
-        if (repository.findById(id1) != null) {
-            Playlist listaNueva = repository.findById(id1).get();
-            listaNueva.getSongs().remove(sRepository.findById(id2).get());
-
-            repository.save(listaNueva);
-
-            return ResponseEntity.noContent().build();
+        Playlist playlist = repository.findById(id1).orElse(null);
+        if (playlist == null || playlist.getSongs().stream().noneMatch(item -> id2.equals(item.getId()))) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        playlist.getSongs().removeIf(item -> id2.equals(item.getId()));
+        repository.save(playlist);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Muestra una canción si existe dentro de una lista")
@@ -254,17 +245,9 @@ public class PlaylistController {
             @PathVariable Long id1,
             @PathVariable Long id2
     ) {
-        Playlist listaCanciones = repository.findById(id1).get();
-
-        Song sComprobar = sRepository.findById(id2).get();
-
-        if (listaCanciones != null && listaCanciones.getSongs().contains(sComprobar) && sComprobar != null) {
-
-            return ResponseEntity
-                    .ok().body(sComprobar);
-
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.of(repository.findById(id1)
+                .flatMap(playlist -> playlist.getSongs().stream()
+                        .filter(song -> id2.equals(song.getId())).findFirst()));
     }
 
 }

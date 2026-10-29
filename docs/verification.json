@@ -1,0 +1,165 @@
+{
+  "kind": "recorded_local_result",
+  "checked_on": "2026-10-29",
+  "platform": "macOS",
+  "jdk": {
+    "version": "17.0.14",
+    "vendor": "Amazon.com Inc."
+  },
+  "source_baseline": "f18fc419110e34a4d98a04e6935e0fe1a7755945",
+  "test_total": 16,
+  "checks": [
+    {
+      "module": "trianafy",
+      "command": "sh ./mvnw verify",
+      "junit": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "09ded5a42f3b0f407af3b555adea2390a15de3f29c49bfba1aad917b14c56308",
+      "junit_xml_sha256": [
+        "5c02a19eec0346b33a29758f750c3c2d874c72362b23e0f2c90eb347d7e71f2c",
+        "0864c03c7f74760452e828e9a8c8794082e7a6dfea0c29d9f30e4fbf8379e800"
+      ]
+    }
+  ],
+  "hosted_ci_run": null,
+  "scope": "Local tests/package with original Maven/Spring pins and isolated settings/repository. No hosted CI or production result is implied.",
+  "packaged_runtime": {
+    "repository": "Trianafy",
+    "artifact_sha256": "b4b167f108e72eb497da54ed8fc0d280aead705170fbd8d3dc3378d9fdcbc9cb",
+    "packaged_config_matches_reviewed_source": true,
+    "binding": "loopback, OS-assigned port",
+    "database": "default H2 memory URL; no file database override or external service",
+    "journeys": [
+      {
+        "method": "POST",
+        "path": "/artist/",
+        "status": 201,
+        "response": {
+          "id": 15,
+          "name": "Fictional runtime artist"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/song/",
+        "status": 201,
+        "response": {
+          "id": 16,
+          "title": "Runtime sample",
+          "artist": "Fictional runtime artist",
+          "album": "Fictional",
+          "year": "2026"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/lists",
+        "status": 201,
+        "response": {
+          "id": 17,
+          "name": "Runtime playlist",
+          "description": "Fictional demo"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/lists/17/songs/16",
+        "status": 200,
+        "response": {
+          "id": 17,
+          "name": "Runtime playlist",
+          "description": "Fictional demo",
+          "songs": [
+            {
+              "id": 16,
+              "title": "Runtime sample",
+              "artist": {
+                "id": 15,
+                "name": "Fictional runtime artist"
+              },
+              "album": "Fictional",
+              "year": "2026"
+            }
+          ]
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/lists/17/songs/16",
+        "status": 200,
+        "response": {
+          "id": 17,
+          "name": "Runtime playlist",
+          "description": "Fictional demo",
+          "songs": [
+            {
+              "id": 16,
+              "title": "Runtime sample",
+              "artist": {
+                "id": 15,
+                "name": "Fictional runtime artist"
+              },
+              "album": "Fictional",
+              "year": "2026"
+            }
+          ]
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/lists",
+        "status": 400,
+        "response": null
+      },
+      {
+        "method": "POST",
+        "path": "/song/",
+        "status": 404,
+        "response": null
+      },
+      {
+        "method": "DELETE",
+        "path": "/artist/15",
+        "status": 204,
+        "response": null
+      },
+      {
+        "method": "GET",
+        "path": "/song/16",
+        "status": 200,
+        "response": {
+          "id": 16,
+          "title": "Runtime sample",
+          "artist": null,
+          "album": "Fictional",
+          "year": "2026"
+        }
+      },
+      {
+        "method": "DELETE",
+        "path": "/song/16",
+        "status": 204,
+        "response": null
+      },
+      {
+        "method": "GET",
+        "path": "/list/17",
+        "status": 200,
+        "response": {
+          "id": 17,
+          "name": "Runtime playlist",
+          "description": "Fictional demo",
+          "songs": []
+        }
+      }
+    ],
+    "process_stopped": true,
+    "exit_code": 143,
+    "shutdown_completed": true,
+    "scope": "Real packaged JAR and HTTP requests, separate from MockMvc/JPA tests"
+  }
+}

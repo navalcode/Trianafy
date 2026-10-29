@@ -23,8 +23,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController
+@Transactional
 @RequestMapping("/artist")
 @RequiredArgsConstructor
 @Tag(name = "Artist", description = "Esta clase implementa controladores REST para Artist")
@@ -40,14 +42,12 @@ public class ArtistController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Artist artistBorrar = artistRepository.findById(id).get();
-
-        songRepository.findAll()
-                .stream()
-                .filter(s -> s.getArtist().equals(artistBorrar))
-                .forEach(s -> s.setArtist(null));
-        
-        artistRepository.deleteById(id);
+        Artist artist = artistRepository.findById(id).orElse(null);
+        if (artist == null) return ResponseEntity.notFound().build();
+        songRepository.findAll().stream()
+                .filter(song -> song.getArtist() != null && id.equals(song.getArtist().getId()))
+                .forEach(song -> song.setArtist(null));
+        artistRepository.delete(artist);
         return ResponseEntity.noContent().build();
     }
 
@@ -110,6 +110,7 @@ public class ArtistController {
     })
     @PostMapping("/")
     public ResponseEntity<Artist> create(@RequestBody Artist nuevoArtista) {
+        if (nuevoArtista.getId() != null) return ResponseEntity.badRequest().build();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(artistRepository.save(nuevoArtista));
