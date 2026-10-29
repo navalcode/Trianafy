@@ -1,13 +1,21 @@
-<!-- navalcode:historical-context -->
-**Historical learning project · Proyecto histórico de aprendizaje**
+# Trianafy
 
-Java REST learning project for artists, songs and playlists. This presentation update does not claim a current build or production readiness. Original documentation and attribution are retained below when present.
+[English](#overview) · [Español](#resumen)
 
-**Español.** Proyecto Java de aprendizaje REST para artistas, canciones y listas. Esta actualización de presentación no acredita compilación actual ni uso en producción. Se conserva la documentación y atribución originales cuando existen.
+## Overview
 
-[Current mobile portfolio / Portfolio móvil actual](https://passkeys.navalcode.org/portfolio/) · [GitHub profile](https://github.com/navalcode)
+Java REST learning project for artists, songs and playlists.
 
----
+An earlier learning exercise. The source is preserved with its original toolchain; compatibility with current versions has not been revalidated.
+
+## Resumen
+
+Proyecto Java de aprendizaje REST para artistas, canciones y listas.
+
+Ejercicio de una etapa anterior de aprendizaje. Se conserva con sus herramientas originales; no se ha vuelto a validar con versiones actuales.
+
+<details>
+<summary>Original documentation and credits · Documentación y créditos originales</summary>
 
 # Trianafy
 
@@ -58,3 +66,7 @@ _Para acceder a la documentación ejecute el proyecto maven con el plugin boot-b
 * **Alejandro Ramírez** - *Proyecto Trianafy* - [arramos27](https://github.com/arramos270)
 
 
+
+</details>
+
+[More of my work · Más proyectos](https://github.com/navalcode)
